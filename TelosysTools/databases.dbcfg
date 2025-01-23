@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databases defaultId="1" maxId="10">
+    <db dialect="org.hibernate.dialect.Oracle10gDialect" driver="oracle.jdbc.driver.OracleDriver" id="0" isolationLevel="" name="ORACLE" poolSize="1" typeName="ORACLE" url="jdbc:oracle:thin:@im2ag-oracle.univ-grenoble-alpes.fr:1521:im2ag">
+        <property name="user" value="oloukpoa"/>
+        <property name="password" value="c4773bae8d"/>
+        <metadata catalog="!" schema="OLOUKPOA" table-name-exclude="LES.*" table-name-include="" table-name-pattern="%" table-types="TABLE"/>
+    </db>
+</databases>

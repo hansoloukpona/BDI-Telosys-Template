@@ -1,0 +1,61 @@
+## --------------------------------------------------
+## #if ( $entity.isJoinEntity() )
+## #cancel("No DTO class for join entity")
+## #end
+## --------------------------------------------------
+#checkId($entity)
+#parse("include/init_var_entity.vm")
+#parse("include/java_header.vm")
+##---------------------------------------------------------------------------------------
+#set($endpointInterface = "${entity.name}Endpoints")
+#set($requestClass = "${entity.name}ToCreateRequest")
+#set($entityEndpointPath = "/${fn.uncapitalize($entity.name)}")
+
+#set($basePackage = "fr.uga.miage.m1.reactorexample")
+
+## #macro( dtoType $link )
+## $link.fieldType.replace($link.targetEntitySimpleType, "${link.targetEntitySimpleType}DTO")#end
+##---------------------------------------------------------------------------------------
+package ${target.javaPackageFromFolder(${SRC})};
+
+import ${basePackage}.request.${requestClass};
+import ${basePackage}.response.${dtoClass};
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+
+/**
+ * Endpoint for the entity ${entity.name}.
+ *
+ * @author Telosys & kakaprout for m1miage2025
+ *
+ */
+
+@RequestMapping("${entityEndpointPath}")
+public interface ${endpointInterface} {
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    Mono<${dtoClass}> add${entity.name}(@RequestBody ${requestClass} ${fn.uncapitalize($requestClass)});
+
+	#if($entity.hasCompositePrimaryKey())
+        #foreach($keyAttribute in $entity.keyAttributes)
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/by-${keyAttribute.name}/{${keyAttribute.name}}")
+    Mono<${dtoClass}> get${entity.name}By${fn.capitalize($keyAttribute.name)}(
+        @PathVariable("${keyAttribute.name}") ${keyAttribute.type} ${keyAttribute.name}
+    );
+        #end
+    #else
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{id}")
+    Mono<${dtoClass}> get${entity.name}(@PathVariable ${entity.keyAttribute.wrapperType} id);
+    #end
+    
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    Flux<${dtoClass}> getAll${entity.name}s();
+}

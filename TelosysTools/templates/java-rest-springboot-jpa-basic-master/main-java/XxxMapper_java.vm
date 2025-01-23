@@ -1,0 +1,38 @@
+## --------------------------------------------------
+##if ( $entity.isJoinEntity() )
+##cancel("No JPA class for join entity")
+##end
+## --------------------------------------------------
+#checkId($entity)
+#parse("include/init_var_entity.vm")
+#parse("include/java_header.vm")
+##---------------------------------------------------------------------------------------
+#set($mapperInterface = "${entity.name}Mapper")
+#set($toCreateClass = "${entity.name}ToCreate")
+#set($requestClass = "${entity.name}ToCreateRequest")
+#set($modelClass = "${entity.name}")
+
+#set($basePackage = "fr.uga.miage.m1.reactorexample")
+
+package ${target.javaPackageFromFolder(${SRC})};
+
+import ${basePackage}.models.${modelClass};
+import ${basePackage}.models.${toCreateClass};
+import ${basePackage}.request.${requestClass};
+import ${basePackage}.response.${dtoClass};
+import org.mapstruct.Mapper;
+
+/**
+ * Mapper for the ${entity.name}.
+ *
+ * @author Telosys & kakaprout for m1miage2025
+ *
+ */
+
+@Mapper
+public interface ${mapperInterface} {
+
+    ${dtoClass} to${modelClass}Response(${modelClass} ${fn.uncapitalize($modelClass)});
+
+    ${toCreateClass} to${toCreateClass}(${requestClass} ${fn.uncapitalize($requestClass)});
+}

@@ -1,0 +1,51 @@
+// Package de la classe
+package ${package}.model;
+
+#foreach( $entity in $model.entities )
+/**
+ * Classe représentant l'entité ${entity.name}.
+ */
+public class ${entity.name} {
+
+    #foreach( $attribute in $entity.attributes )
+    // ${attribute.name}
+    private ${attribute.javaType} ${attribute.name};
+    #end
+
+    #foreach( $link in $entity.links )
+        #if( $link.cardinality == "ManyToMany" )
+    /**
+     * Relation many-to-many avec ${link.targetEntity}.
+     * Cette relation est représentée par la classe intermédiaire ${link.joinTableName}.
+     */
+    private List<${link.joinTableName}> ${link.name};
+        #else
+    /**
+     * Relation ${link.cardinality} avec ${link.targetEntity}.
+     */
+    private ${link.targetEntity} ${link.name};
+        #end
+    #end
+
+    // Getters et Setters
+    #foreach( $attribute in $entity.attributes )
+    public ${attribute.javaType} get${attribute.nameUpper()}() {
+        return ${attribute.name};
+    }
+
+    public void set${attribute.nameUpper()}(${attribute.javaType} ${attribute.name}) {
+        this.${attribute.name} = ${attribute.name};
+    }
+    #end
+
+    #foreach( $link in $entity.links )
+    public ${link.javaType} get${link.nameUpper()}() {
+        return ${link.name};
+    }
+
+    public void set${link.nameUpper()}(${link.javaType} ${link.name}) {
+        this.${link.name} = ${link.name};
+    }
+    #end
+}
+#end

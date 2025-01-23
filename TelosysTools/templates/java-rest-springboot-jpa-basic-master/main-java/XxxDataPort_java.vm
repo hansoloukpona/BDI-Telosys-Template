@@ -1,0 +1,43 @@
+## --------------------------------------------------
+##if ( $entity.isJoinEntity() )
+##cancel("No repository class for join entity")
+##end
+## --------------------------------------------------
+#checkId($entity)
+#parse("include/init_var_entity.vm")
+#parse("include/java_header.vm")
+package ${target.javaPackageFromFolder(${SRC})};
+##---------------------------------------------------------------------------------------
+
+#set($basePackage = "fr.uga.miage.m1.reactorexample")
+
+import ${basePackage}.models.${recordClass};
+import ${basePackage}.models.${entity.name}ToCreate;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+#foreach ($import in $java.imports($entity)) 
+import $import;
+#end
+
+/**
+ * Data port for entity "${jpaEntityClass}" <br> 
+ * 
+ * @author Telosys & kakaprout for m1miage2025
+ *
+ */
+
+public interface ${entity.name}DataPort {
+
+    Mono<${entity.name}> create${entity.name}(${entity.name}ToCreate ${recordInstance}ToCreate);
+
+    #if($entity.hasCompositePrimaryKey())
+        #foreach($attribute in $entity.keyAttributes)
+    Mono<${entity.name}> findBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)});
+        #end
+    #else
+    Mono<${entity.name}> findById(${entity.keyAttribute.type} id);
+    #end
+
+    Flux<${entity.name}> findAll();
+}

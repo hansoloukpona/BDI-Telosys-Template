@@ -1,0 +1,93 @@
+## --------------------------------------------------
+##if ( $entity.isJoinEntity() )
+##cancel("No JPA class for join entity")
+##end
+## --------------------------------------------------
+#checkId($entity)
+#parse("include/init_var_entity.vm")
+#parse("include/java_header.vm")
+
+#set( $adapterClass = "${entity.name}DataAdapter" )
+#set( $repositoryInterface = "${entity.name}Repository" )
+#set( $mapperInterface = "${entity.name}EntityMapper" )
+#set( $dataPortInterface = "${entity.name}DataPort" )
+#set( $entityClass = "${entity.name}Entity" )
+#set( $modelClass = "${entity.name}" )
+#set( $toCreateClass = "${entity.name}ToCreate" )
+#set( $alreadyExistException = "${entity.name}EntityAlreadyExist" )
+#set( $notFoundException = "${entity.name}EntityNotFoundException" )
+
+#set($basePackage = "fr.uga.miage.m1.reactorexample")
+
+package ${target.javaPackageFromFolder(${SRC})};
+
+import ${basePackage}.data.mapper.${mapperInterface};
+import ${basePackage}.data.models.${entityClass};
+import ${basePackage}.data.repositories.${repositoryInterface};
+import ${basePackage}.exception.data.${alreadyExistException};
+import ${basePackage}.exception.data.${notFoundException};
+import ${basePackage}.models.${modelClass};
+import ${basePackage}.models.${toCreateClass};
+import ${basePackage}.port.${dataPortInterface};
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+#foreach ($import in $java.imports($entity)) 
+import $import;
+#end
+
+/**
+ * Data Mapper class for "${entity.name}"
+ *
+ * @author Telosys & kakaprout for m1miage2025
+ *
+ */
+
+@Component
+@RequiredArgsConstructor
+public class ${adapterClass} implements ${dataPortInterface} {
+
+    private final ${repositoryInterface} $fn.uncapitalize($repositoryInterface);
+    private final ${mapperInterface} $fn.uncapitalize($mapperInterface);
+
+ 	@Override
+    public Mono<${modelClass}> create${modelClass}(${toCreateClass} ${fn.uncapitalize($toCreateClass)}) {
+        return ${fn.uncapitalize($repositoryInterface)}.existsBy${fn.capitalize($entity.attributes.get(0).name)}And${fn.capitalize($entity.attributes.get(1).name)}(
+                #foreach($attribute in $entity.attributes)#if($velocityCount == 1)${fn.uncapitalize($toCreateClass)}.get${fn.capitalize($attribute.name)}()#end#if($velocityCount == 2), ${fn.uncapitalize($toCreateClass)}.get${fn.capitalize($attribute.name)}()#end#end)
+                .flatMap(exist -> !exist ? ${fn.uncapitalize($repositoryInterface)}.save(
+                        ${entityClass}.builder()
+                            #foreach($attribute in $entity.attributes)
+                                .${attribute.name}(${fn.uncapitalize($toCreateClass)}.get${fn.capitalize($attribute.name)}())
+                            #end
+                            .build()
+                ) : Mono.error(new ${alreadyExistException}(String.format("${entity.name} already exists with the same values", 
+				#foreach($attribute in $entity.attributes)#if($velocityCount == 1)${fn.uncapitalize($toCreateClass)}.get${fn.capitalize($attribute.name)}()#end#if($velocityCount == 2), ${fn.uncapitalize($toCreateClass)}.get${fn.capitalize($attribute.name)}()#end#end)))
+        ).map(${fn.uncapitalize($mapperInterface)}::to${modelClass});
+    }
+
+	#if($entity.hasCompositePrimaryKey())
+        #foreach($attribute in $entity.keyAttributes)
+    @Override
+    public Mono<${modelClass}> findBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)}) {
+        return ${fn.uncapitalize($repositoryInterface)}.findBy${fn.capitalize($attribute.name)}(${fn.uncapitalize($attribute.name)})
+                .map(${fn.uncapitalize($mapperInterface)}::to${modelClass})
+                .switchIfEmpty(Mono.error(new ${notFoundException}(String.format("${entity.name} [%s] not found", ${fn.uncapitalize($attribute.name)}))));
+    }
+        #end
+    #else
+    @Override
+    public Mono<${modelClass}> findById(${entity.keyAttribute.type} id) {
+        return ${fn.uncapitalize($repositoryInterface)}.findById(id)
+                .map(${fn.uncapitalize($mapperInterface)}::to${modelClass})
+                .switchIfEmpty(Mono.error(new ${notFoundException}(String.format("${entity.name} [%s] not found", id))));
+    }
+    #end
+
+	public synchronized Flux<${modelClass}> findAll() {
+        return ${fn.uncapitalize($repositoryInterface)}.findAll().map(${fn.uncapitalize($mapperInterface)}::to${modelClass});
+    }
+
+}
+

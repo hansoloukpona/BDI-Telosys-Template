@@ -1,0 +1,29 @@
+## --------------------------------------------------
+##if ( $entity.isJoinEntity() )
+##cancel("No JPA class for join entity")
+##end
+## --------------------------------------------------
+#checkId($entity)
+#parse("include/init_var_entity.vm")
+#parse("include/java_header.vm")
+##---------------------------------------------------------------------------------------
+
+#set( $exceptionName = "${entity.name}EntityAlreadyExist" )
+
+package ${target.javaPackageFromFolder(${SRC})};
+
+/**
+ * Data exception  for the entity ${entity.name}.
+ *
+ * @author Telosys & kakaprout for m1miage2025
+ *
+ */
+
+public class ${exceptionName} extends Exception {
+
+    public ${exceptionName}(String message) {
+        super(message);
+    }
+
+}
+

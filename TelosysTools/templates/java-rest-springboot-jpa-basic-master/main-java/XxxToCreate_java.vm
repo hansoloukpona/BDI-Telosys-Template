@@ -1,0 +1,30 @@
+## --------------------------------------------------
+##if ( $entity.isJoinEntity() )
+##cancel("No JPA class for join entity")
+##end
+## --------------------------------------------------
+#checkId($entity)
+#parse("include/init_var_entity.vm")
+#parse("include/java_header.vm")
+##---------------------------------------------------------------------------------------
+package ${target.javaPackageFromFolder(${SRC})};
+
+import lombok.Data;
+
+#foreach ($import in $java.imports($entity)) 
+import $import;
+#end
+
+/**
+ * Record to create for the entity ${entity.name}.
+ *
+ * @author Telosys & kakaprout for m1miage2025
+ *
+ */
+
+@Data
+public class ${entity.name}ToCreate {
+#foreach ($attribute in $entity.attributes)
+        ${attribute.type} ${attribute.name};
+#end
+}

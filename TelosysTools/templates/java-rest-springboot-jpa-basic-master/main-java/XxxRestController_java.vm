@@ -1,0 +1,85 @@
+## --------------------------------------------------
+## #if ( $entity.isJoinEntity() )
+## #cancel("No SERVICE class for join entity")
+## #end
+## --------------------------------------------------
+#checkId($entity)
+## #using("REST_API_ROOT")
+#parse("include/init_var_entity.vm")
+#parse("include/java_header.vm")
+##---------------------------------------------------------------------------------------
+package ${target.javaPackageFromFolder(${SRC})};
+
+#set($controllerClass = "${entity.name}Controller")
+#set($servicePort = "${entity.name}ServicePort")
+#set($endpointsInterface = "${entity.name}Endpoints")
+#set($mapperClass = "${entity.name}Mapper")
+#set($requestClass = "${entity.name}ToCreateRequest")
+#set($dtoClass = "${entity.name}DTO")
+
+#set($basePackage = "fr.uga.miage.m1")
+
+import ${basePackage}.reactorexample.api.${servicePort};
+import ${basePackage}.reactorexample.endpoint.${endpointsInterface};
+import ${basePackage}.entrypoint.mapper.${mapperClass};
+import ${basePackage}.reactorexample.request.${requestClass};
+import ${basePackage}.reactorexample.response.${dtoClass};
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+#foreach ($import in $java.imports($entity)) 
+import $import;
+#end
+
+/**
+ * RestController for the entity ${entity.name}.
+ *
+ * @author Telosys & kakaprout for m1miage2025
+ *
+ */
+
+@RestController
+@RequiredArgsConstructor
+public class ${controllerClass} implements ${endpointsInterface} {
+    private final ${servicePort} ${fn.uncapitalize($servicePort)};
+    private final ${mapperClass} ${fn.uncapitalize($mapperClass)};
+
+    @Override
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public Mono<${dtoClass}> add${entity.name}(@RequestBody ${requestClass} ${fn.uncapitalize($requestClass)}) {
+        return ${fn.uncapitalize($servicePort)}.create(${fn.uncapitalize($mapperClass)}.to${entity.name}ToCreate(${fn.uncapitalize($requestClass)}))
+                .map(${fn.uncapitalize($mapperClass)}::to${entity.name}Response);
+    }
+
+	#if($entity.hasCompositePrimaryKey())
+        #foreach($keyAttribute in $entity.keyAttributes)
+    @Override
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/by-${keyAttribute.name}/{${keyAttribute.name}}")
+    public Mono<${dtoClass}> get${entity.name}By${fn.capitalize($keyAttribute.name)}(
+            @PathVariable("${keyAttribute.name}") ${keyAttribute.type} ${keyAttribute.name}) {
+        return ${fn.uncapitalize($servicePort)}.getBy${fn.capitalize($keyAttribute.name)}(${keyAttribute.name})
+                .map(${fn.uncapitalize($mapperClass)}::to${entity.name}Response);
+    }
+        #end
+    #else
+    @Override
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{id}")
+    public Mono<${dtoClass}> get${entity.name}(@PathVariable ${entity.keyAttribute.wrapperType} id) {
+        return ${fn.uncapitalize($servicePort)}.get${entity.name}(id)
+                .map(${fn.uncapitalize($mapperClass)}::to${entity.name}Response);
+    }
+    #end
+
+    @Override
+    @GetMapping("/all")
+    public Flux<${dtoClass}> getAll${entity.name}s() {
+        return ${fn.uncapitalize($servicePort)}.getAll()
+                .map(${fn.uncapitalize($mapperClass)}::to${entity.name}Response);
+    }
+}

@@ -1,0 +1,34 @@
+## --------------------------------------------------
+##if ( $entity.isJoinEntity() )
+##cancel("No JPA class for join entity")
+##end
+## --------------------------------------------------
+#checkId($entity)
+#parse("include/init_var_entity.vm")
+#parse("include/java_header.vm")
+##---------------------------------------------------------------------------------------
+
+#set($requestClass = "${entity.name}ToCreateRequest")
+#set($recordInstance = $fn.uncapitalize($entity.name))
+
+package ${target.javaPackageFromFolder(${SRC})};
+
+import lombok.Data;
+
+#foreach ($import in $java.imports($entity)) 
+import $import;
+#end
+
+/**
+ * DTO to create request for the entity ${entity.name}.
+ *
+ * @author Telosys & kakaprout for m1miage2025
+ *
+ */
+
+@Data
+public class ${requestClass} {
+    #foreach($attribute in $entity.attributes)
+    ${attribute.wrapperType} ${fn.uncapitalize($attribute.name)};
+    #end
+}

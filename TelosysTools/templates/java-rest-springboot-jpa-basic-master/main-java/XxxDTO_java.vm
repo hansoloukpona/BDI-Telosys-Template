@@ -1,0 +1,31 @@
+## --------------------------------------------------
+## #if ( $entity.isJoinEntity() )
+## #cancel("No DTO class for join entity")
+## #end
+## --------------------------------------------------
+#checkId($entity)
+#parse("include/init_var_entity.vm")
+#parse("include/java_header.vm")
+##---------------------------------------------------------------------------------------
+## #macro( dtoType $link )
+## $link.fieldType.replace($link.targetEntitySimpleType, "${link.targetEntitySimpleType}DTO")#end
+##---------------------------------------------------------------------------------------
+package ${target.javaPackageFromFolder(${SRC})};
+
+#foreach( $import in $java.imports($entity) )
+import $import;
+#end
+
+/**
+ * DTO class for "${entity.name}"
+ *
+ * @author Telosys and & kakaprout for m1miage2025
+ *
+ */
+
+public record ${dtoClass} (
+    #foreach($attribute in $entity.attributes)
+        ${attribute.wrapperType} ${fn.uncapitalize($attribute.name)}#if($foreach.hasNext),#end
+		
+    #end
+) {}

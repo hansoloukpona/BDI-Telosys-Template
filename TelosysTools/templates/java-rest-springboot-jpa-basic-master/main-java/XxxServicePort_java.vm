@@ -1,0 +1,49 @@
+## --------------------------------------------------
+## #if ( $entity.isJoinEntity() )
+## #cancel("No SERVICE class for join entity")
+## #end
+## --------------------------------------------------
+#checkId($entity)
+#parse("include/init_var_entity.vm")
+#parse("include/java_header.vm")
+##---------------------------------------------------------------------------------------
+package ${target.javaPackageFromFolder(${SRC})};
+
+#set($servicePort = "${entity.name}ServicePort")
+#set($entityClass = "${entity.name}")
+#set($toCreateClass = "${entity.name}ToCreate")
+
+#set($basePackage = "fr.uga.miage.m1.reactorexample")
+
+import ${basePackage}.models.${entityClass};
+import ${basePackage}.models.${toCreateClass};
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+#foreach ($import in $java.imports($entity)) 
+import $import;
+#end
+
+/**
+ * Service port for entity "${entity.name}" <br>
+ * 
+ * This service provides all the necessary operations required by the REST controller <br>
+ * 
+ * @author Telosys & kakaprout for m1miage2025
+ *
+ */
+
+
+public interface ${servicePort} {
+    Mono<${entityClass}> create(${toCreateClass} ${fn.uncapitalize($toCreateClass)});
+    
+	#if($entity.hasCompositePrimaryKey())
+        #foreach($attribute in $entity.keyAttributes)
+    Mono<${entityClass}> getBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)});
+        #end
+    #else
+    Mono<${entityClass}> get${entityClass}(${entity.keyAttribute.type} ${fn.uncapitalize($entity.keyAttribute.name)});
+    #end
+
+    Flux<${entityClass}> getAll();
+}

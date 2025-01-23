@@ -1,0 +1,83 @@
+## --------------------------------------------------
+## #if ( $entity.isJoinEntity() )
+## #cancel("No SERVICE class for join entity")
+## #end
+## --------------------------------------------------
+#checkId($entity)
+#parse("include/init_var_entity.vm")
+#parse("include/java_header.vm")
+##---------------------------------------------------------------------------------------
+package ${target.javaPackageFromFolder(${SRC})};
+
+#set($serviceClass = "${entity.name}Service")
+#set($servicePort = "${entity.name}ServicePort")
+#set($dataPort = "${entity.name}DataPort")
+#set($entityClass = "${entity.name}")
+#set($toCreateClass = "${entity.name}ToCreate")
+#set($alreadyExistException = "${entity.name}EntityAlreadyExist")
+#set($notFoundException = "${entity.name}EntityNotFoundException")
+#set($creationException = "${entity.name}CreationException")
+#set($notFoundDomainException = "${entity.name}NotFoundException")
+
+#set($basePackage = "fr.uga.miage.m1.reactorexample")
+
+import ${basePackage}.api.${servicePort};
+import ${basePackage}.exception.data.${alreadyExistException};
+import ${basePackage}.exception.data.${notFoundException};
+import ${basePackage}.exception.domain.${creationException};
+import ${basePackage}.exception.domain.${notFoundDomainException};
+import ${basePackage}.models.${entityClass};
+import ${basePackage}.models.${toCreateClass};
+import ${basePackage}.port.${dataPort};
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+#foreach ($import in $java.imports($entity)) 
+import $import;
+#end
+
+/**
+ * Service for entity "${entity.name}" <br>
+ * 
+ * This service provides all the necessary operations required by the REST controller <br>
+ * 
+ * @author Telosys & kakaprout for m1miage2025
+ *
+ */
+
+@Service
+@RequiredArgsConstructor
+public class ${serviceClass} implements ${servicePort} {
+    private final ${dataPort} ${fn.uncapitalize($dataPort)};
+
+    @Override
+    public Mono<${entityClass}> create(${toCreateClass} ${fn.uncapitalize($toCreateClass)}) {
+        return ${fn.uncapitalize($dataPort)}.create${entityClass}(${fn.uncapitalize($toCreateClass)})
+                .onErrorMap(${alreadyExistException}.class, ex -> new ${creationException}(ex.getMessage()))
+                .flatMap(Mono::just);
+    }
+
+    #if($entity.hasCompositePrimaryKey())
+        #foreach($attribute in $entity.keyAttributes)
+    @Override
+    public Mono<${entityClass}> getBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)}) {
+        return ${fn.uncapitalize($dataPort)}.findBy${fn.capitalize($attribute.name)}(${fn.uncapitalize($attribute.name)})
+                .onErrorMap(${notFoundException}.class, ex -> new ${notFoundDomainException}(ex.getMessage()));
+    }
+        #end
+    #else
+    @Override
+    public Mono<${entityClass}> get${entityClass}(${entity.keyAttribute.type} ${fn.uncapitalize($entity.keyAttribute.name)}) {
+        return ${fn.uncapitalize($dataPort)}.findById(${fn.uncapitalize($entity.keyAttribute.name)})
+                .onErrorMap(${notFoundException}.class, ex -> new ${notFoundDomainException}(ex.getMessage()));
+    }
+    #end
+
+    @Override
+    public Flux<${entityClass}> getAll() {
+        return ${fn.uncapitalize($dataPort)}.findAll();
+    }
+}
+
