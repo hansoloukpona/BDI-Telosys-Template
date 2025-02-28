@@ -70,7 +70,7 @@ public class ${adapterClass} implements ${dataPortInterface} {
 	#if($entity.hasCompositePrimaryKey())
         #foreach($attribute in $entity.keyAttributes)
     @Override
-    public Mono<${modelClass}> findBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)}) {
+    public Flux<${modelClass}> findBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)}) {
         return ${fn.uncapitalize($repositoryInterface)}.findBy${fn.capitalize($attribute.name)}(${fn.uncapitalize($attribute.name)})
                 .map(${fn.uncapitalize($mapperInterface)}::to${modelClass})
                 .switchIfEmpty(Mono.error(new ${notFoundException}(String.format("${entity.name} [%s] not found", ${fn.uncapitalize($attribute.name)}))));

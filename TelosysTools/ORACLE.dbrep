@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Telosys Database Repository --><root>
-    <tableList databaseId="0" databaseName="ORACLE" databaseProductName="Oracle" generation="2025-01-23 13:54:29">
-        <table catalog="" databaseComment="" databaseType="TABLE" javaBean="Block" name="BLOCK" schema="OLOUKPOA">
-            <column dbComment="" dbDefaultValue="" dbName="NUMERODEBLOCK" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="5" dbTypeName="NUMBER" inputType="number" javaName="numerodeblock" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Numerodeblock" notNull="true" selected="true"/>
-            <column dbComment="" dbDefaultValue="" dbName="NOMBREDEPLACE" dbNotNull="true" dbPosition="2" dbSize="5" dbTypeName="NUMBER" inputType="number" javaName="nombredeplace" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Nombredeplace" notNull="true" selected="true"/>
-            <column dbComment="" dbDefaultValue="" dbName="ESTRESERVE" dbNotNull="true" dbPosition="3" dbSize="1" dbTypeName="NUMBER" inputType="number" javaName="estreserve" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Estreserve" notNull="true" selected="true"/>
-            <column dbComment="" dbDefaultValue="" dbName="IDPARKING" dbNotNull="true" dbPosition="4" dbSize="0" dbTypeName="NUMBER" inputType="number" javaName="idparking" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Idparking" notNull="true" selected="true"/>
-            <link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="FK_ETAGE_BLOCK" id="LINK_FK_FK_ETAGE_BLOCK_I" inverseSideOf="LINK_FK_FK_ETAGE_BLOCK_O" javaName="listOfEtage" javaType="unused" joinTableName="" mappedBy="block" optional="" owningSide="false" sourceTableName="BLOCK" targetEntity="Etage" targetTableName="ETAGE" used="true"/>
+    <tableList databaseId="0" databaseName="ORACLE" databaseProductName="Oracle" generation="2025-01-30 11:26:48">
+        <table catalog="" databaseComment="" databaseType="TABLE" javaBean="Abonnement" name="ABONNEMENT" schema="OLOUKPOA">
+            <column dbComment="" dbDefaultValue="" dbName="EMAIL" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="50" dbTypeName="VARCHAR2" inputType="text" javaName="email" javaType="java.lang.String" jdbcTypeCode="12" label="Email" maxLength="50" notEmpty="true" notNull="true" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="IDPARKING" dbNotNull="true" dbPosition="2" dbPrimaryKey="true" dbSize="15" dbTypeName="VARCHAR2" inputType="text" javaName="idparking" javaType="java.lang.String" jdbcTypeCode="12" label="Idparking" maxLength="15" notEmpty="true" notNull="true" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="NUMERODEPLACE" dbNotNull="false" dbPosition="3" dbSize="5" dbTypeName="NUMBER" inputType="number" javaName="numerodeplace" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Numerodeplace" notNull="false" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="DUREEENJOUR" dbNotNull="true" dbPosition="4" dbSize="3" dbTypeName="NUMBER" inputType="number" javaName="dureeenjour" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Dureeenjour" notNull="true" selected="true"/>
+            <column dateType="DT" dbComment="" dbDefaultValue="" dbName="DATEDEBUTRESERVATION" dbNotNull="true" dbPosition="5" dbSize="7" dbTypeName="DATE" inputType="" javaName="datedebutreservation" javaType="java.util.Date" jdbcTypeCode="93" label="Datedebutreservation" notNull="true" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="RENOUVELLEMENTAUTOMATIQUE" dbNotNull="true" dbPosition="6" dbSize="1" dbTypeName="NUMBER" inputType="number" javaName="renouvellementautomatique" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Renouvellementautomatique" notNull="true" selected="true"/>
+        </table>
+        <table catalog="" databaseComment="" databaseType="TABLE" javaBean="Admin" name="ADMIN" schema="OLOUKPOA">
+            <column dbComment="" dbDefaultValue="" dbName="EMAIL" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="50" dbTypeName="VARCHAR2" inputType="text" javaName="email" javaType="java.lang.String" jdbcTypeCode="12" label="Email" maxLength="50" notEmpty="true" notNull="true" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="MOTDEPASS" dbNotNull="true" dbPosition="2" dbSize="50" dbTypeName="VARCHAR2" inputType="text" javaName="motdepass" javaType="java.lang.String" jdbcTypeCode="12" label="Motdepass" maxLength="50" notEmpty="true" notNull="true" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="NOM" dbNotNull="true" dbPosition="3" dbSize="50" dbTypeName="VARCHAR2" inputType="text" javaName="nom" javaType="java.lang.String" jdbcTypeCode="12" label="Nom" maxLength="50" notEmpty="true" notNull="true" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="PRENOM" dbNotNull="true" dbPosition="4" dbSize="50" dbTypeName="VARCHAR2" inputType="text" javaName="prenom" javaType="java.lang.String" jdbcTypeCode="12" label="Prenom" maxLength="50" notEmpty="true" notNull="true" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="TELEPHONE" dbNotNull="true" dbPosition="5" dbSize="0" dbTypeName="NUMBER" inputType="number" javaName="telephone" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Telephone" notNull="true" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="IDPARKING" dbNotNull="true" dbPosition="6" dbSize="15" dbTypeName="VARCHAR2" inputType="text" javaName="idparking" javaType="java.lang.String" jdbcTypeCode="12" label="Idparking" maxLength="15" notEmpty="true" notNull="true" selected="true"/>
+            <fk name="FK_ADMIN_PARKING">
+                <fkcol colname="IDPARKING" colref="IDPARKING" deferrable="7" deleterule="1" sequence="1" tablename="ADMIN" tableref="PARKING" updaterule="0"/>
+            </fk>
+            <link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="FK_ADMIN_PARKING" id="LINK_FK_FK_ADMIN_PARKING_O" inverseSideOf="" javaName="parking" javaType="unused" joinTableName="" mappedBy="" optional="" owningSide="true" sourceTableName="ADMIN" targetEntity="Parking" targetTableName="PARKING" used="true">
+                <joinColumns>
+                    <joinColumn insertable="false" name="IDPARKING" nullable="true" referencedColumnName="IDPARKING" unique="false" updatable="false"/>
+                </joinColumns>
+            </link>
         </table>
         <table catalog="" databaseComment="" databaseType="TABLE" javaBean="City" name="CITY" schema="OLOUKPOA">
             <column dbComment="" dbDefaultValue="" dbName="CODEINSEE" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="50" dbTypeName="VARCHAR2" inputType="text" javaName="codeinsee" javaType="java.lang.String" jdbcTypeCode="12" label="Codeinsee" maxLength="50" notEmpty="true" notNull="true" selected="true"/>
@@ -28,19 +45,6 @@
             <column dbComment="" dbDefaultValue="" dbName="TELEPHONE" dbNotNull="true" dbPosition="5" dbSize="0" dbTypeName="NUMBER" inputType="number" javaName="telephone" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Telephone" notNull="true" selected="true"/>
             <link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="FK_RESERVATION_CONDUCTEUR" id="LINK_FK_FK_RESERVATION_CONDUCTEUR_I" inverseSideOf="LINK_FK_FK_RESERVATION_CONDUCTEUR_O" javaName="listOfReservation" javaType="unused" joinTableName="" mappedBy="conducteur" optional="" owningSide="false" sourceTableName="CONDUCTEUR" targetEntity="Reservation" targetTableName="RESERVATION" used="true"/>
         </table>
-        <table catalog="" databaseComment="" databaseType="TABLE" javaBean="Etage" name="ETAGE" schema="OLOUKPOA">
-            <column dbComment="" dbDefaultValue="" dbName="NUMETAGE" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="0" dbTypeName="NUMBER" inputType="number" javaName="numetage" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Numetage" notNull="true" selected="true"/>
-            <column dbComment="" dbDefaultValue="" dbName="NUMERODEBLOCK" dbNotNull="true" dbPosition="2" dbSize="5" dbTypeName="NUMBER" inputType="number" javaName="numerodeblock" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Numerodeblock" notNull="true" selected="true"/>
-            <fk name="FK_ETAGE_BLOCK">
-                <fkcol colname="NUMERODEBLOCK" colref="NUMERODEBLOCK" deferrable="7" deleterule="1" sequence="1" tablename="ETAGE" tableref="BLOCK" updaterule="0"/>
-            </fk>
-            <link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="FK_ETAGE_BLOCK" id="LINK_FK_FK_ETAGE_BLOCK_O" inverseSideOf="" javaName="block" javaType="unused" joinTableName="" mappedBy="" optional="" owningSide="true" sourceTableName="ETAGE" targetEntity="Block" targetTableName="BLOCK" used="true">
-                <joinColumns>
-                    <joinColumn insertable="false" name="NUMERODEBLOCK" nullable="true" referencedColumnName="NUMERODEBLOCK" unique="false" updatable="false"/>
-                </joinColumns>
-            </link>
-            <link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="FK_PLACE_ETAGE" id="LINK_FK_FK_PLACE_ETAGE_I" inverseSideOf="LINK_FK_FK_PLACE_ETAGE_O" javaName="listOfPlace" javaType="unused" joinTableName="" mappedBy="etage" optional="" owningSide="false" sourceTableName="ETAGE" targetEntity="Place" targetTableName="PLACE" used="true"/>
-        </table>
         <table catalog="" databaseComment="" databaseType="TABLE" javaBean="Parking" name="PARKING" schema="OLOUKPOA">
             <column dbComment="" dbDefaultValue="" dbName="IDPARKING" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="15" dbTypeName="VARCHAR2" inputType="text" javaName="idparking" javaType="java.lang.String" jdbcTypeCode="12" label="Idparking" maxLength="15" notEmpty="true" notNull="true" selected="true"/>
             <column dbComment="" dbDefaultValue="" dbName="NOM" dbNotNull="false" dbPosition="2" dbSize="100" dbTypeName="VARCHAR2" inputType="text" javaName="nom" javaType="java.lang.String" jdbcTypeCode="12" label="Nom" maxLength="100" notNull="false" selected="true"/>
@@ -61,6 +65,8 @@
             <fk name="FK_PARKING_CITY">
                 <fkcol colname="CODEINSEE" colref="CODEINSEE" deferrable="7" deleterule="1" sequence="1" tablename="PARKING" tableref="CITY" updaterule="0"/>
             </fk>
+            <link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="FK_ADMIN_PARKING" id="LINK_FK_FK_ADMIN_PARKING_I" inverseSideOf="LINK_FK_FK_ADMIN_PARKING_O" javaName="listOfAdmin" javaType="unused" joinTableName="" mappedBy="parking" optional="" owningSide="false" sourceTableName="PARKING" targetEntity="Admin" targetTableName="ADMIN" used="true"/>
+            <link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="FK_IDPARKING" id="LINK_FK_FK_IDPARKING_I" inverseSideOf="LINK_FK_FK_IDPARKING_O" javaName="listOfPlace" javaType="unused" joinTableName="" mappedBy="parking" optional="" owningSide="false" sourceTableName="PARKING" targetEntity="Place" targetTableName="PLACE" used="true"/>
             <link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="FK_PARKING_CITY" id="LINK_FK_FK_PARKING_CITY_O" inverseSideOf="" javaName="city" javaType="unused" joinTableName="" mappedBy="" optional="" owningSide="true" sourceTableName="PARKING" targetEntity="City" targetTableName="CITY" used="true">
                 <joinColumns>
                     <joinColumn insertable="false" name="CODEINSEE" nullable="true" referencedColumnName="CODEINSEE" unique="false" updatable="false"/>
@@ -71,13 +77,13 @@
             <column dbComment="" dbDefaultValue="" dbName="NUMERODEPLACE" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="5" dbTypeName="NUMBER" inputType="number" javaName="numerodeplace" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Numerodeplace" notNull="true" selected="true"/>
             <column dbComment="" dbDefaultValue="" dbName="ESTDISPONIBLE" dbNotNull="true" dbPosition="2" dbSize="1" dbTypeName="NUMBER" inputType="number" javaName="estdisponible" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Estdisponible" notNull="true" selected="true"/>
             <column dbComment="" dbDefaultValue="" dbName="ESTUNEPLACEDEMOBILITEREDUITE" dbNotNull="true" dbPosition="3" dbSize="1" dbTypeName="NUMBER" inputType="number" javaName="estuneplacedemobilitereduite" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Estuneplacedemobilitereduite" notNull="true" selected="true"/>
-            <column dbComment="" dbDefaultValue="" dbName="NUMETAGE" dbNotNull="true" dbPosition="4" dbSize="0" dbTypeName="NUMBER" inputType="number" javaName="numetage" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Numetage" notNull="true" selected="true"/>
-            <fk name="FK_PLACE_ETAGE">
-                <fkcol colname="NUMETAGE" colref="NUMETAGE" deferrable="7" deleterule="1" sequence="1" tablename="PLACE" tableref="ETAGE" updaterule="0"/>
+            <column dbComment="" dbDefaultValue="" dbName="IDPARKING" dbNotNull="true" dbPosition="4" dbPrimaryKey="true" dbSize="15" dbTypeName="VARCHAR2" inputType="text" javaName="idparking" javaType="java.lang.String" jdbcTypeCode="12" label="Idparking" maxLength="15" notEmpty="true" notNull="true" selected="true"/>
+            <fk name="FK_IDPARKING">
+                <fkcol colname="IDPARKING" colref="IDPARKING" deferrable="7" deleterule="1" sequence="1" tablename="PLACE" tableref="PARKING" updaterule="0"/>
             </fk>
-            <link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="FK_PLACE_ETAGE" id="LINK_FK_FK_PLACE_ETAGE_O" inverseSideOf="" javaName="etage" javaType="unused" joinTableName="" mappedBy="" optional="" owningSide="true" sourceTableName="PLACE" targetEntity="Etage" targetTableName="ETAGE" used="true">
+            <link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="FK_IDPARKING" id="LINK_FK_FK_IDPARKING_O" inverseSideOf="" javaName="parking" javaType="unused" joinTableName="" mappedBy="" optional="" owningSide="true" sourceTableName="PLACE" targetEntity="Parking" targetTableName="PARKING" used="true">
                 <joinColumns>
-                    <joinColumn insertable="false" name="NUMETAGE" nullable="true" referencedColumnName="NUMETAGE" unique="false" updatable="false"/>
+                    <joinColumn insertable="false" name="IDPARKING" nullable="true" referencedColumnName="IDPARKING" unique="false" updatable="false"/>
                 </joinColumns>
             </link>
             <link cardinality="OneToMany" cascade="" fetch="DEFAULT" foreignKeyName="FK_RESERVATION_PLACE" id="LINK_FK_FK_RESERVATION_PLACE_I" inverseSideOf="LINK_FK_FK_RESERVATION_PLACE_O" javaName="listOfReservation" javaType="unused" joinTableName="" mappedBy="place" optional="" owningSide="false" sourceTableName="PLACE" targetEntity="Reservation" targetTableName="RESERVATION" used="true"/>
@@ -85,19 +91,22 @@
         <table catalog="" databaseComment="" databaseType="TABLE" javaBean="Reservation" name="RESERVATION" schema="OLOUKPOA">
             <column dbComment="" dbDefaultValue="" dbName="NUMERODEPLACE" dbNotNull="true" dbPosition="1" dbPrimaryKey="true" dbSize="5" dbTypeName="NUMBER" inputType="number" javaName="numerodeplace" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Numerodeplace" notNull="true" selected="true"/>
             <column dbComment="" dbDefaultValue="" dbName="EMAIL" dbNotNull="true" dbPosition="2" dbPrimaryKey="true" dbSize="50" dbTypeName="VARCHAR2" inputType="text" javaName="email" javaType="java.lang.String" jdbcTypeCode="12" label="Email" maxLength="50" notEmpty="true" notNull="true" selected="true"/>
-            <column dateType="DT" dbComment="" dbDefaultValue="" dbName="DATEDEBUTPREVUE" dbNotNull="true" dbPosition="3" dbSize="7" dbTypeName="DATE" inputType="" javaName="datedebutprevue" javaType="java.util.Date" jdbcTypeCode="93" label="Datedebutprevue" notNull="true" selected="true"/>
-            <column dbComment="" dbDefaultValue="" dbName="DUREERESERVATION" dbNotNull="true" dbPosition="4" dbSize="0" dbTypeName="NUMBER" inputType="number" javaName="dureereservation" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Dureereservation" notNull="true" selected="true"/>
-            <column dateType="DT" dbComment="" dbDefaultValue="" dbName="DATEFINREEL" dbNotNull="true" dbPosition="5" dbSize="7" dbTypeName="DATE" inputType="" javaName="datefinreel" javaType="java.util.Date" jdbcTypeCode="93" label="Datefinreel" notNull="true" selected="true"/>
-            <column dateType="DT" dbComment="" dbDefaultValue="" dbName="DATEDEBUTREEL" dbNotNull="true" dbPosition="6" dbSize="7" dbTypeName="DATE" inputType="" javaName="datedebutreel" javaType="java.util.Date" jdbcTypeCode="93" label="Datedebutreel" notNull="true" selected="true"/>
-            <column dbComment="" dbDefaultValue="" dbName="ETAT" dbNotNull="true" dbPosition="7" dbSize="15" dbTypeName="VARCHAR2" inputType="text" javaName="etat" javaType="java.lang.String" jdbcTypeCode="12" label="Etat" maxLength="15" notEmpty="true" notNull="true" selected="true"/>
-            <column dbComment="" dbDefaultValue="" dbName="DIXMINAVANT" dbNotNull="true" dbPosition="8" dbSize="2" dbTypeName="INTERVAL DAY(2) TO SECOND(6)" inputType="" javaName="dixminavant" javaType="java.lang.String" jdbcTypeCode="-104" label="Dixminavant" maxLength="2" notEmpty="true" notNull="true" selected="true"/>
-            <column dbComment="" dbDefaultValue="" dbName="QRCODE" dbNotNull="true" dbPosition="9" dbSize="4000" dbTypeName="CLOB" inputType="" javaName="qrcode" javaType="java.sql.Clob" jdbcTypeCode="2005" label="Qrcode" notNull="true" selected="true"/>
-            <column dbComment="" dbDefaultValue="" dbName="PRIXFINAL" dbNotNull="true" dbPosition="10" dbSize="8" dbTypeName="NUMBER" inputType="number" javaName="prixfinal" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Prixfinal" notNull="true" selected="true"/>
+            <column dateType="DT" dbComment="" dbDefaultValue="" dbName="DATEDEBUTPREVUE" dbNotNull="true" dbPosition="3" dbPrimaryKey="true" dbSize="7" dbTypeName="DATE" inputType="" javaName="datedebutprevue" javaType="java.util.Date" jdbcTypeCode="93" label="Datedebutprevue" notNull="true" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="DUREERESERVATION" dbNotNull="false" dbPosition="4" dbSize="0" dbTypeName="NUMBER" inputType="number" javaName="dureereservation" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Dureereservation" notNull="false" selected="true"/>
+            <column dateType="DT" dbComment="" dbDefaultValue="" dbName="DATEFINREEL" dbNotNull="false" dbPosition="5" dbSize="7" dbTypeName="DATE" inputType="" javaName="datefinreel" javaType="java.util.Date" jdbcTypeCode="93" label="Datefinreel" notNull="false" selected="true"/>
+            <column dateType="DT" dbComment="" dbDefaultValue="" dbName="DATEDEBUTREEL" dbNotNull="false" dbPosition="6" dbSize="7" dbTypeName="DATE" inputType="" javaName="datedebutreel" javaType="java.util.Date" jdbcTypeCode="93" label="Datedebutreel" notNull="false" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="ETAT" dbNotNull="false" dbPosition="7" dbSize="15" dbTypeName="VARCHAR2" inputType="text" javaName="etat" javaType="java.lang.String" jdbcTypeCode="12" label="Etat" maxLength="15" notNull="false" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="DIXMINAVANT" dbNotNull="false" dbPosition="8" dbSize="2" dbTypeName="INTERVAL DAY(2) TO SECOND(6)" inputType="" javaName="dixminavant" javaType="java.lang.String" jdbcTypeCode="-104" label="Dixminavant" maxLength="2" notNull="false" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="QRCODE" dbNotNull="false" dbPosition="9" dbSize="4000" dbTypeName="CLOB" inputType="" javaName="qrcode" javaType="java.sql.Clob" jdbcTypeCode="2005" label="Qrcode" notNull="false" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="PRIXFINAL" dbNotNull="false" dbPosition="10" dbSize="8" dbTypeName="NUMBER" inputType="number" javaName="prixfinal" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Prixfinal" notNull="false" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="IDPARKING" dbNotNull="true" dbPosition="11" dbPrimaryKey="true" dbSize="15" dbTypeName="VARCHAR2" inputType="text" javaName="idparking" javaType="java.lang.String" jdbcTypeCode="12" label="Idparking" maxLength="15" notEmpty="true" notNull="true" selected="true"/>
+            <column dbComment="" dbDefaultValue="" dbName="RENOUVELLEMENTAUTOMATIQUE" dbNotNull="false" dbPosition="12" dbSize="1" dbTypeName="NUMBER" inputType="number" javaName="renouvellementautomatique" javaType="java.math.BigDecimal" jdbcTypeCode="2" label="Renouvellementautomatique" notNull="false" selected="true"/>
             <fk name="FK_RESERVATION_CONDUCTEUR">
                 <fkcol colname="EMAIL" colref="EMAIL" deferrable="7" deleterule="1" sequence="1" tablename="RESERVATION" tableref="CONDUCTEUR" updaterule="0"/>
             </fk>
             <fk name="FK_RESERVATION_PLACE">
                 <fkcol colname="NUMERODEPLACE" colref="NUMERODEPLACE" deferrable="7" deleterule="1" sequence="1" tablename="RESERVATION" tableref="PLACE" updaterule="0"/>
+                <fkcol colname="IDPARKING" colref="IDPARKING" deferrable="7" deleterule="1" sequence="2" tablename="RESERVATION" tableref="PLACE" updaterule="0"/>
             </fk>
             <link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="FK_RESERVATION_CONDUCTEUR" id="LINK_FK_FK_RESERVATION_CONDUCTEUR_O" inverseSideOf="" javaName="conducteur" javaType="unused" joinTableName="" mappedBy="" optional="" owningSide="true" sourceTableName="RESERVATION" targetEntity="Conducteur" targetTableName="CONDUCTEUR" used="true">
                 <joinColumns>
@@ -107,6 +116,7 @@
             <link cardinality="ManyToOne" cascade="" fetch="DEFAULT" foreignKeyName="FK_RESERVATION_PLACE" id="LINK_FK_FK_RESERVATION_PLACE_O" inverseSideOf="" javaName="place" javaType="unused" joinTableName="" mappedBy="" optional="" owningSide="true" sourceTableName="RESERVATION" targetEntity="Place" targetTableName="PLACE" used="true">
                 <joinColumns>
                     <joinColumn insertable="false" name="NUMERODEPLACE" nullable="true" referencedColumnName="NUMERODEPLACE" unique="false" updatable="false"/>
+                    <joinColumn insertable="false" name="IDPARKING" nullable="true" referencedColumnName="IDPARKING" unique="false" updatable="false"/>
                 </joinColumns>
             </link>
         </table>

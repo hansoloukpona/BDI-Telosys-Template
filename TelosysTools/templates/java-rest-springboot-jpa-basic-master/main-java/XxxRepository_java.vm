@@ -49,18 +49,21 @@ public interface ${jpaEntityClass}Repository extends ReactiveJpaRepository<${jpa
     @Lock(LockModeType.READ)
     Flux<${jpaEntityClass}Entity> findAll();
 
-    #if($entity.attributes.size() >= 2)
-    Mono<Boolean> existsBy${fn.capitalize($entity.attributes.get(0).name)}And${fn.capitalize($entity.attributes.get(1).name)}(
-        ${entity.attributes.get(0).type} ${fn.uncapitalize($entity.attributes.get(0).name)}, 
-        ${entity.attributes.get(1).type} ${fn.uncapitalize($entity.attributes.get(1).name)}
-    );
-    #end
+    #if($entity.keyAttributes.size() > 0)
+    Mono<Boolean> existsBy
+    #foreach($attribute in $entity.keyAttributes)
+        ${fn.capitalize($attribute.name)}#if($velocityCount < $entity.keyAttributes.size())And#end
+    #end(
+    #foreach($attribute in $entity.keyAttributes)
+        ${attribute.type} ${fn.uncapitalize($attribute.name)}#if($velocityCount < $entity.keyAttributes.size()), #end
+    #end);
+	#end
 
     Mono<Page<${jpaEntityClass}Entity>> findAll(Pageable pageable);
 
 	#if($entity.hasCompositePrimaryKey())
         #foreach($attribute in $entity.keyAttributes)
-    Mono<${jpaEntityClass}Entity> findBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)});
+    Flux<${jpaEntityClass}Entity> findBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)});
         #end
     #else
     Mono<${jpaEntityClass}Entity> findById(${entity.keyAttribute.type} id);

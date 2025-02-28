@@ -60,7 +60,7 @@ public class ${controllerClass} implements ${endpointsInterface} {
     @Override
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/by-${keyAttribute.name}/{${keyAttribute.name}}")
-    public Mono<${dtoClass}> get${entity.name}By${fn.capitalize($keyAttribute.name)}(
+    public Flux<${dtoClass}> get${entity.name}By${fn.capitalize($keyAttribute.name)}(
             @PathVariable("${keyAttribute.name}") ${keyAttribute.type} ${keyAttribute.name}) {
         return ${fn.uncapitalize($servicePort)}.getBy${fn.capitalize($keyAttribute.name)}(${keyAttribute.name})
                 .map(${fn.uncapitalize($mapperClass)}::to${entity.name}Response);

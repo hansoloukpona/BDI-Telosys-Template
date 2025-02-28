@@ -34,6 +34,7 @@ import reactor.core.publisher.Mono;
  *
  */
 
+@CrossOrigin
 @RequestMapping("${entityEndpointPath}")
 public interface ${endpointInterface} {
 
@@ -45,7 +46,7 @@ public interface ${endpointInterface} {
         #foreach($keyAttribute in $entity.keyAttributes)
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/by-${keyAttribute.name}/{${keyAttribute.name}}")
-    Mono<${dtoClass}> get${entity.name}By${fn.capitalize($keyAttribute.name)}(
+    Flux<${dtoClass}> get${entity.name}By${fn.capitalize($keyAttribute.name)}(
         @PathVariable("${keyAttribute.name}") ${keyAttribute.type} ${keyAttribute.name}
     );
         #end

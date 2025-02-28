@@ -39,7 +39,7 @@ public interface ${servicePort} {
     
 	#if($entity.hasCompositePrimaryKey())
         #foreach($attribute in $entity.keyAttributes)
-    Mono<${entityClass}> getBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)});
+    Flux<${entityClass}> getBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)});
         #end
     #else
     Mono<${entityClass}> get${entityClass}(${entity.keyAttribute.type} ${fn.uncapitalize($entity.keyAttribute.name)});

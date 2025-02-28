@@ -62,7 +62,7 @@ public class ${serviceClass} implements ${servicePort} {
     #if($entity.hasCompositePrimaryKey())
         #foreach($attribute in $entity.keyAttributes)
     @Override
-    public Mono<${entityClass}> getBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)}) {
+    public Flux<${entityClass}> getBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)}) {
         return ${fn.uncapitalize($dataPort)}.findBy${fn.capitalize($attribute.name)}(${fn.uncapitalize($attribute.name)})
                 .onErrorMap(${notFoundException}.class, ex -> new ${notFoundDomainException}(ex.getMessage()));
     }

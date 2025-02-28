@@ -76,22 +76,23 @@ $jpa.fieldAnnotations(4, $attribute)
     private $attribute.formattedType(10) $attribute.name #if($attribute.hasInitialValue())= ${attribute.initialValue} #end;
 
 #end
-#if ( $entity.hasLinks() )	
+
+#if ( $entity.hasLinks() )
     //--- LINKS ( RELATIONSHIPS )
 #foreach( $link in $entity.links )
-## all annotations : Cardinality, JoinColumn(s), etc
-##--- with "insertable=false, updatable=false" if attribute already mapped
+        ## Ajouter des annotations pour chaque lien
 $jpa.linkAnnotations(4, $link, $entity.attributes)
-##--- no "insertable=false, updatable=false" if already mapped
-## $jpa.linkAnnotations(4, $link)
-##--- Just @Cardinality annotation
-## $jpa.linkCardinalityAnnotation(4, $link) 
-##--- Just @JoinColumn(s) annotation(s)
-## $jpa.linkJoinAnnotation(4, $link) 
-## $jpa.linkJoinAnnotation(4, $link, $entity.attributes)
-    private ${link.formattedFieldType(10)}Entity $link.fieldName ; 
+
+        ## Vérifier si le type nécessite un suffixe "Entity" et le compléter si nécessaire
+#set($fieldType = "${link.formattedFieldType(10)}")
+#set($excludedTypes = ["String", "Integer", "Long", "Double", "Boolean"])
+#if(!$fieldType.endsWith("Entity") && !$excludedTypes.contains($fieldType))
+#set($fieldType = "${fieldType}Entity")
+#end
+    private ${fieldType} $link.fieldName ;
 
 #end
 #end
-    
+
+
 }

@@ -33,7 +33,7 @@ public interface ${entity.name}DataPort {
 
     #if($entity.hasCompositePrimaryKey())
         #foreach($attribute in $entity.keyAttributes)
-    Mono<${entity.name}> findBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)});
+    Flux<${entity.name}> findBy${fn.capitalize($attribute.name)}(${attribute.type} ${fn.uncapitalize($attribute.name)});
         #end
     #else
     Mono<${entity.name}> findById(${entity.keyAttribute.type} id);
